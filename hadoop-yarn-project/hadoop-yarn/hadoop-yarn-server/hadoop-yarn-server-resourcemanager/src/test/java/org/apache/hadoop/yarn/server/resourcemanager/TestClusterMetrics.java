@@ -69,7 +69,7 @@ public class TestClusterMetrics {
 
   @Test
   public void testClusterMetrics() throws Exception {
-    Assert.assertTrue(!metrics.numContainerAssignedPerSecond.changed());
+    Assert.assertTrue(!metrics.containerAssignedPerSecond.changed());
     metrics.incrNumContainerAssigned();
     metrics.incrNumContainerAssigned();
     GenericTestUtils.waitFor(new Supplier<Boolean>() {
