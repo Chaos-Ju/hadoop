@@ -97,7 +97,7 @@ public class ClusterMetrics {
    * The executor service that count containers assigned in last second.
    *
    */
-  private static ScheduledThreadPoolExecutor assignCounterExecutor;
+  private ScheduledThreadPoolExecutor assignCounterExecutor;
 
   ClusterMetrics() {
     assignCounterExecutor  = new ScheduledThreadPoolExecutor(1,
