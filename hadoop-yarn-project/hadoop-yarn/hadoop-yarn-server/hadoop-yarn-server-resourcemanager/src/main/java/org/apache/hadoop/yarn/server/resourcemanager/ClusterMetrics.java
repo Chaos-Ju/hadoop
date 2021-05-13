@@ -71,7 +71,7 @@ public class ClusterMetrics {
   @Metric("RM Event Processor CPU Usage 60 second Max") MutableGaugeLong
     rmEventProcCPUMax;
   @Metric("# of Containers assigned in last second") MutableGaugeInt
-    numContainerAssignedPerSecond;
+    containerAssignedPerSecond;
 
   private boolean rmEventProcMonitorEnable = false;
 
@@ -107,7 +107,7 @@ public class ClusterMetrics {
     assignCounterExecutor.scheduleAtFixedRate(new Runnable() {
       @Override
       public void run() {
-        numContainerAssignedPerSecond.set(numContainersAssigned.getAndSet(0));
+        containerAssignedPerSecond.set(numContainersAssigned.getAndSet(0));
       }
     }, 1, 1, TimeUnit.SECONDS);
   }
@@ -147,8 +147,8 @@ public class ClusterMetrics {
 
   @VisibleForTesting
   public synchronized static void destroy() {
-    if(assignCounterExecutor != null) {
-      assignCounterExecutor.shutdownNow();
+    if(INSTANCE != null && INSTANCE.getAssignCounterExecutor() != null) {
+      INSTANCE.getAssignCounterExecutor().shutdownNow();
     }
     isInitialized.set(false);
     INSTANCE = null;
@@ -350,12 +350,15 @@ public class ClusterMetrics {
     utilizedVirtualCores.incr(delta);
   }
 
-  public int getnumContainerAssignedPerSecond() {
-    return numContainerAssignedPerSecond.value();
+  public int getContainerAssignedPerSecond() {
+    return containerAssignedPerSecond.value();
   }
 
   public void incrNumContainerAssigned() {
     numContainersAssigned.incrementAndGet();
   }
 
+  private ScheduledThreadPoolExecutor getAssignCounterExecutor(){
+    return assignCounterExecutor;
+  }
 }
