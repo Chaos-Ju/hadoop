@@ -75,7 +75,7 @@ public class TestClusterMetrics {
     GenericTestUtils.waitFor(new Supplier<Boolean>() {
       @Override
       public Boolean get() {
-        return metrics.getnumContainerAssignedPerSecond() == 2;
+        return metrics.getContainerAssignedPerSecond() == 2;
       }
     }, 500, 5000);
   }

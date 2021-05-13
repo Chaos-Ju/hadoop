@@ -160,7 +160,8 @@ public class ClusterMetricsInfo {
     this.shutdownNodes = clusterMetrics.getNumShutdownNMs();
     this.totalNodes = activeNodes + lostNodes + decommissionedNodes
         + rebootedNodes + unhealthyNodes + decommissioningNodes + shutdownNodes;
-    this.containerAssignedPerSecond = clusterMetrics.getnumContainerAssignedPerSecond();
+    this.containerAssignedPerSecond = clusterMetrics
+        .getContainerAssignedPerSecond();
   }
 
   public int getAppsSubmitted() {
