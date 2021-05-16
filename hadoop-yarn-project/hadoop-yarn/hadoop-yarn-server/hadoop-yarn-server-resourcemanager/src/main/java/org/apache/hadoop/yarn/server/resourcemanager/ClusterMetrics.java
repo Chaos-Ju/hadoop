@@ -70,7 +70,7 @@ public class ClusterMetrics {
     rmEventProcCPUAvg;
   @Metric("RM Event Processor CPU Usage 60 second Max") MutableGaugeLong
     rmEventProcCPUMax;
-  @Metric("# of Containers assigned in last second") MutableGaugeInt
+  @Metric("# of Containers assigned in the last second") MutableGaugeInt
     containerAssignedPerSecond;
 
   private boolean rmEventProcMonitorEnable = false;
@@ -92,11 +92,6 @@ public class ClusterMetrics {
   private static MetricsRegistry registry;
 
   private AtomicInteger numContainersAssigned =  new AtomicInteger(0);
-
-  /**
-   * The executor service that count containers assigned in last second.
-   *
-   */
   private ScheduledThreadPoolExecutor assignCounterExecutor;
 
   ClusterMetrics() {
@@ -147,7 +142,7 @@ public class ClusterMetrics {
 
   @VisibleForTesting
   public synchronized static void destroy() {
-    if(INSTANCE != null && INSTANCE.getAssignCounterExecutor() != null) {
+    if (INSTANCE != null && INSTANCE.getAssignCounterExecutor() != null) {
       INSTANCE.getAssignCounterExecutor().shutdownNow();
     }
     isInitialized.set(false);
