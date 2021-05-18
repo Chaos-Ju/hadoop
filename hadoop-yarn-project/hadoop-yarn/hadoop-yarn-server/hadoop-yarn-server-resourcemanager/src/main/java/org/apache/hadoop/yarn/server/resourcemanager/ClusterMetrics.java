@@ -72,6 +72,9 @@ public class ClusterMetrics {
     rmEventProcCPUMax;
   @Metric("# of Containers assigned in the last second") MutableGaugeInt
     containerAssignedPerSecond;
+  @Metric("# rm event queue size") MutableGaugeInt rmEventQueueSize;
+  @Metric("# scheduler event queue size")
+    MutableGaugeInt schedulerEventQueueSize;
 
   private boolean rmEventProcMonitorEnable = false;
 
@@ -355,5 +358,21 @@ public class ClusterMetrics {
 
   private ScheduledThreadPoolExecutor getAssignCounterExecutor(){
     return assignCounterExecutor;
+  }
+
+  public int getRmEventQueueSize() {
+    return rmEventQueueSize.value();
+  }
+
+  public void setRmEventQueueSize(int rmEventQueueSize) {
+    this.rmEventQueueSize.set(rmEventQueueSize);
+  }
+
+  public int getSchedulerEventQueueSize() {
+    return schedulerEventQueueSize.value();
+  }
+
+  public void setSchedulerEventQueueSize(int schedulerEventQueueSize) {
+    this.schedulerEventQueueSize.set(schedulerEventQueueSize);
   }
 }
