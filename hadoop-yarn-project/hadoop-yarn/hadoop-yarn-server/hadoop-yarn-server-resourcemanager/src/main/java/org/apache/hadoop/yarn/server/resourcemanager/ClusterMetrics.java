@@ -72,8 +72,8 @@ public class ClusterMetrics {
     rmEventProcCPUMax;
   @Metric("# of Containers assigned in the last second") MutableGaugeInt
     containerAssignedPerSecond;
-  @Metric("# rm event queue size") MutableGaugeInt rmEventQueueSize;
-  @Metric("# scheduler event queue size")
+  @Metric("# of rm dispatcher event queue size") MutableGaugeInt rmEventQueueSize;
+  @Metric("# of scheduler dispatcher event queue size")
     MutableGaugeInt schedulerEventQueueSize;
 
   private boolean rmEventProcMonitorEnable = false;
