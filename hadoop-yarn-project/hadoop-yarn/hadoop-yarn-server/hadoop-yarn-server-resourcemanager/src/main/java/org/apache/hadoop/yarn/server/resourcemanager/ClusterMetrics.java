@@ -72,9 +72,10 @@ public class ClusterMetrics {
     rmEventProcCPUMax;
   @Metric("# of Containers assigned in the last second") MutableGaugeInt
     containerAssignedPerSecond;
-  @Metric("# of rm dispatcher event queue size") MutableGaugeInt rmEventQueueSize;
+  @Metric("# of rm dispatcher event queue size")
+    MutableGaugeInt rmDispatcherEventQueueSize;
   @Metric("# of scheduler dispatcher event queue size")
-    MutableGaugeInt schedulerEventQueueSize;
+    MutableGaugeInt schedulerDispatcherEventQueueSize;
 
   private boolean rmEventProcMonitorEnable = false;
 
@@ -361,18 +362,18 @@ public class ClusterMetrics {
   }
 
   public int getRmEventQueueSize() {
-    return rmEventQueueSize.value();
+    return rmDispatcherEventQueueSize.value();
   }
 
   public void setRmEventQueueSize(int rmEventQueueSize) {
-    this.rmEventQueueSize.set(rmEventQueueSize);
+    this.rmDispatcherEventQueueSize.set(rmEventQueueSize);
   }
 
   public int getSchedulerEventQueueSize() {
-    return schedulerEventQueueSize.value();
+    return schedulerDispatcherEventQueueSize.value();
   }
 
   public void setSchedulerEventQueueSize(int schedulerEventQueueSize) {
-    this.schedulerEventQueueSize.set(schedulerEventQueueSize);
+    this.schedulerDispatcherEventQueueSize.set(schedulerEventQueueSize);
   }
 }

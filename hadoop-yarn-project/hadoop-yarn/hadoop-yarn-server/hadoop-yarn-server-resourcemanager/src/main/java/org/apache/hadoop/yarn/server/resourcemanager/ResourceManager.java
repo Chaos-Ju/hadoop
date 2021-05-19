@@ -943,15 +943,18 @@ public class ResourceManager extends CompositeService
 
       eventQueueMetricExecutor = new ScheduledThreadPoolExecutor(1,
               new ThreadFactoryBuilder().
-                      setDaemon(true).setNameFormat("EventQueueSizeMetricThread").
-                      build());
+              setDaemon(true).setNameFormat("EventQueueSizeMetricThread").
+              build());
       eventQueueMetricExecutor.scheduleAtFixedRate(new Runnable() {
         @Override
         public void run() {
-          int rmEventQueueSize = ((AsyncDispatcher)getRMContext().getDispatcher()).getEventQueueSize();
+          int rmEventQueueSize = ((AsyncDispatcher)getRMContext().
+               getDispatcher()).getEventQueueSize();
           ClusterMetrics.getMetrics().setRmEventQueueSize(rmEventQueueSize);
-          int schedulerEventQueueSize = ((EventDispatcher)schedulerDispatcher).getEventQueueSize();
-          ClusterMetrics.getMetrics().setSchedulerEventQueueSize(schedulerEventQueueSize);
+          int schedulerEventQueueSize = ((EventDispatcher)schedulerDispatcher).
+              getEventQueueSize();
+          ClusterMetrics.getMetrics().
+              setSchedulerEventQueueSize(schedulerEventQueueSize);
         }
       }, 1, 1, TimeUnit.SECONDS);
 

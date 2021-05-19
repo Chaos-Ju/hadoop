@@ -219,8 +219,10 @@ public class MetricsOverviewTable extends HtmlBlock {
         th().$class("ui-state-default")
             .__("Maximum Cluster Application Priority").__().
         th().$class("ui-state-default").__("Scheduler Busy %").__().
-        th().$class("ui-state-default").__("RM Dispatcher EventQueue Size").__().
-        th().$class("ui-state-default").__("Scheduler Dispatcher EventQueue Size").__().
+        th().$class("ui-state-default")
+            .__("RM Dispatcher EventQueue Size").__().
+        th().$class("ui-state-default")
+            .__("Scheduler Dispatcher EventQueue Size").__().
         __().
         __().
     tbody().$class("ui-widget-content").
