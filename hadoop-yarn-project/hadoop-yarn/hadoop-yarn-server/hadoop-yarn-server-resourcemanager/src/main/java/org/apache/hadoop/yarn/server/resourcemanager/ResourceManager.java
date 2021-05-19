@@ -949,7 +949,7 @@ public class ResourceManager extends CompositeService
         @Override
         public void run() {
           int rmEventQueueSize = ((AsyncDispatcher)getRMContext().
-               getDispatcher()).getEventQueueSize();
+              getDispatcher()).getEventQueueSize();
           ClusterMetrics.getMetrics().setRmEventQueueSize(rmEventQueueSize);
           int schedulerEventQueueSize = ((EventDispatcher)schedulerDispatcher).
               getEventQueueSize();
