@@ -49,6 +49,9 @@ import java.util.Map;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.metrics2.MetricsRecord;
+import org.apache.hadoop.metrics2.impl.MetricsCollectorImpl;
+import org.apache.hadoop.metrics2.impl.MetricsRecords;
 import org.apache.hadoop.service.ServiceStateException;
 import org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest;
 import org.apache.hadoop.yarn.api.records.ApplicationAccessType;
@@ -129,6 +132,7 @@ public class TestNMLeveldbStateStoreService {
     }
     FileUtil.fullyDelete(TMP_DIR);
   }
+
 
   private List<RecoveredContainerState> loadContainersState(
       RecoveryIterator<RecoveredContainerState> it) throws IOException {
@@ -1863,5 +1867,105 @@ public class TestNMLeveldbStateStoreService {
     public MasterKey generateKey() {
       return createNewMasterKey().getMasterKey();
     }
+  }
+
+  @Test
+  public void testMetricsInited() throws Exception  {
+    MetricsCollectorImpl collector = new MetricsCollectorImpl();
+    NMLeveldbStateStoreOpDurations opDurations =stateStore.opDurations;
+
+    opDurations.getMetrics(collector, true);
+    assertEquals("Incorrect number of perf metrics", 1,
+            collector.getRecords().size());
+    MetricsRecord record = collector.getRecords().get(0);
+    MetricsRecords.assertTag(record,
+        NMLeveldbStateStoreOpDurations.RECORD_INFO.name(),
+        "NMLeveldbStateStoreOpDurations");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadApplicationsStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreApplicationStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveApplicationStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreDeletionTaskStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveDeletionTaskStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadDeletionServiceStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerQueuedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerPausedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerLaunchedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerUpdateTokenStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerCompletedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerKilledStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerDiagnosticsStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerRemainingRetryAttemptsDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerWorkDirStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerLogDirStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveContainerStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadLocalizationStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreStartResourceLocalizationStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreFinishResourceLocalizationStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveLocalizedResourceStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveContainerPausedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveContainerQueuedStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadNMTokensStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreNMTokenCurrentMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreNMTokenPreviousMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreNMTokenApplicationMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveNMTokenApplicationMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadContainerTokensStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerTokenCurrentMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerTokenPreviousMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreContainerTokenStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveContainerTokenStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadLogDeleterStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreLogDeleterStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreAMRMProxyCurrentMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "LoadAMRMProxyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreAMRMProxyAppContextEntryStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreAMRMProxyNextMasterKeyStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveAMRMProxyAppContextEntryStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "RemoveAMRMProxyAppContextStateDurationAvgTime");
+    MetricsRecords.assertMetricNotNull(record,
+        "StoreAssignedResourcesStateDurationAvgTime");
   }
 }
